@@ -10,6 +10,12 @@ public class Income extends Transaction {
     }
 
     @Override
+    public Transaction duplicate() {
+        return new Income(this.getUser_id(), this.getTransactionValue(), this.getDescription(),
+                this.getClassification(), this.getIsRecurring());
+    }
+
+    @Override
     public String toString() {
         return "Income{" +
                 "id=" + super.getId() +

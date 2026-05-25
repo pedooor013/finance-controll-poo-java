@@ -76,6 +76,8 @@ public abstract class Transaction {
         isRecurring = recurring;
     }
 
+    public abstract Transaction duplicate();
+
     @Override
     public String toString() {
         return "id=" + id +
