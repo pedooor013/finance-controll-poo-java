@@ -3,6 +3,11 @@
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+enum TransactionType {
+    EXPENSE,
+    INCOME
+}
+
 public abstract class Transaction {
     static int idTransaction = 1;
     private int id;
@@ -12,10 +17,11 @@ public abstract class Transaction {
     private String description;
     private String classification;
     private boolean isRecurring;
+    private TransactionType transactionType;
 
     public Transaction(){}
 
-    public Transaction(int user_id, double transactionValue, String description, String classification, boolean isRecurring) {
+    public Transaction(int user_id, double transactionValue, String description, String classification, boolean isRecurring, TransactionType transactionType) {
         this.id = idTransaction++;
         this.user_id = user_id;
         this.dateTimeTransaction = LocalDate.from(LocalDateTime.now());
@@ -23,6 +29,7 @@ public abstract class Transaction {
         this.description = description;
         this.classification = classification;
         this.isRecurring = isRecurring;
+        this.transactionType = transactionType;
     }
 
     public int getId(){
@@ -76,6 +83,13 @@ public abstract class Transaction {
         isRecurring = recurring;
     }
 
+    public TransactionType getTransactionType() {
+        return this.transactionType;
+    }
+
+    public void  setTransactionType(TransactionType transactionType) {
+        this.transactionType = transactionType;
+    }
     public abstract Transaction duplicate();
 
     @Override
@@ -86,6 +100,7 @@ public abstract class Transaction {
                 ", transactionValue=" + transactionValue +
                 ", description='" + description + '\'' +
                 ", classification='" + classification + '\'' +
-                ", isRecurring=" + isRecurring;
+                ", isRecurring=" + isRecurring +
+                ", transactionType=" + this.transactionType;
     }
 }

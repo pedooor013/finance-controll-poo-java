@@ -6,7 +6,7 @@ public class Income extends Transaction {
     }
 
     public Income(int user_id, double transactionValue, String description, String classification, boolean isRecurring) {
-        super(user_id, transactionValue, description, classification, isRecurring);
+        super(user_id, transactionValue, description, classification, isRecurring, TransactionType.INCOME);
     }
 
     @Override

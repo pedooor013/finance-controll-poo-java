@@ -7,16 +7,16 @@ enum PaymentType {
 }
 
 public class Expense extends Transaction {
-    public int installmentsTotal;
-    public int installmentsPaid;
-    public String paymentResponsible;
-    public PaymentType paymentType;
+    private int installmentsTotal;
+    private int installmentsPaid;
+    private String paymentResponsible;
+    private PaymentType paymentType;
 
     public Expense() {
     }
 
     public Expense(int user_id, double transactionValue, String description, String classification, boolean isRecurring, int installmentsTotal, int installmentsPaid, String paymentResponsible, PaymentType paymentType) {
-        super(user_id, transactionValue, description, classification, isRecurring);
+        super(user_id, transactionValue, description, classification, isRecurring, TransactionType.EXPENSE);
         if (isRecurring && installmentsTotal > 1) {
             throw new IllegalArgumentException("You can't create a recurring expense with more than 1 installment");
         }
@@ -26,7 +26,38 @@ public class Expense extends Transaction {
         this.paymentType = paymentType;
     }
 
-    //Metodos
+    public int getInstallmentsTotal() {
+        return installmentsTotal;
+    }
+
+    public void setInstallmentsTotal(int installmentsTotal) {
+        this.installmentsTotal = installmentsTotal;
+    }
+
+    public int getInstallmentsPaid() {
+        return installmentsPaid;
+    }
+
+    public void setInstallmentsPaid(int installmentsPaid) {
+        this.installmentsPaid = installmentsPaid;
+    }
+
+    public String getPaymentResponsible() {
+        return paymentResponsible;
+    }
+
+    public void setPaymentResponsible(String paymentResponsible) {
+        this.paymentResponsible = paymentResponsible;
+    }
+
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
+    }
+
     public void paymentOfInstallments() {
         this.installmentsPaid++;
         if (this.installmentsPaid == 1) {
