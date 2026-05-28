@@ -11,7 +11,7 @@ enum TransactionType {
 public abstract class Transaction {
     static int idTransaction = 1;
     private int id;
-    private int user_id;
+    private int bankAccountId;
     private LocalDate dateTimeTransaction;
     private double transactionValue;
     private String description;
@@ -21,9 +21,9 @@ public abstract class Transaction {
 
     public Transaction(){}
 
-    public Transaction(int user_id, double transactionValue, String description, String classification, boolean isRecurring, TransactionType transactionType) {
+    public Transaction(int bankAccountId, double transactionValue, String description, String classification, boolean isRecurring, TransactionType transactionType) {
         this.id = idTransaction++;
-        this.user_id = user_id;
+        this.bankAccountId = this.bankAccountId;
         this.dateTimeTransaction = LocalDate.from(LocalDateTime.now());
         this.transactionValue = transactionValue;
         this.description = description;
@@ -35,12 +35,12 @@ public abstract class Transaction {
     public int getId(){
         return id;
     }
-    public int getUser_id() {
-        return user_id;
+    public int getBankAccountId() {
+        return bankAccountId;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setBankAccountId(int bankAccountId) {
+        this.bankAccountId = bankAccountId;
     }
 
     public LocalDate getDateTimeTransaction() {
@@ -95,7 +95,7 @@ public abstract class Transaction {
     @Override
     public String toString() {
         return "id=" + id +
-                ", user_id=" + user_id +
+                ", bankAccountId=" + bankAccountId +
                 ", dateTimeTransaction=" + dateTimeTransaction +
                 ", transactionValue=" + transactionValue +
                 ", description='" + description + '\'' +
