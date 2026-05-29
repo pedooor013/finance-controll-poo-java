@@ -2,8 +2,8 @@
 
 enum PaymentType {
     PIX,
-    DÉBITO,
-    CRÉDITO
+    DEBITO,
+    CREDITO
 }
 
 public class Expense extends Transaction {
@@ -12,7 +12,6 @@ public class Expense extends Transaction {
     private String paymentResponsible;
     private PaymentType paymentType;
     private Category category;
-
     public Expense() {
     }
 
@@ -78,6 +77,11 @@ public class Expense extends Transaction {
             System.out.println(this.installmentsPaid + "rd installment paid!");
         } else {
             System.out.println(this.installmentsPaid + "th installment paid!");
+        }
+    }
+
+    private Transaction createNewInstallmentExpense() {
+        if(this.installmentsPaid == this.installmentsTotal) {
         }
     }
 
