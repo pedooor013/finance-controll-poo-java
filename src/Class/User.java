@@ -49,12 +49,12 @@ public class User {
         this.password = hashPassword(password);
     }
 
-    public ArrayList<BankAccount> getUserBankAcount() {
-        return userBankAcount;
+    public ArrayList<BankAccount> getUserBankAccount() {
+        return userBankAccount;
     }
 
-    public void setUserBankAcount(ArrayList<BankAccount> userBankAcount) {
-        this.userBankAcount = userBankAcount;
+    public void setUserBankAccount(ArrayList<BankAccount> userBankAccount) {
+        this.userBankAccount = userBankAccount;
     }
 
     private String hashPassword(String password) {

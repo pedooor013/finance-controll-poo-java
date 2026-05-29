@@ -11,12 +11,13 @@ public class Expense extends Transaction {
     private int installmentsPaid;
     private String paymentResponsible;
     private PaymentType paymentType;
+    private Category category;
 
     public Expense() {
     }
 
-    public Expense(int user_id, double transactionValue, String description, String classification, boolean isRecurring, int installmentsTotal, int installmentsPaid, String paymentResponsible, PaymentType paymentType) {
-        super(user_id, transactionValue, description, classification, isRecurring, TransactionType.EXPENSE);
+    public Expense(int bankAccountId, double transactionValue, String description, boolean isRecurring, int installmentsTotal, int installmentsPaid, String paymentResponsible, PaymentType paymentType, Category category) {
+        super(bankAccountId, transactionValue, description, isRecurring, TransactionType.EXPENSE);
         if (isRecurring && installmentsTotal > 1) {
             throw new IllegalArgumentException("You can't create a recurring expense with more than 1 installment");
         }
@@ -24,6 +25,7 @@ public class Expense extends Transaction {
         this.installmentsPaid = installmentsPaid;
         this.paymentResponsible = paymentResponsible;
         this.paymentType = paymentType;
+        this.category = category;
     }
 
     public int getInstallmentsTotal() {
@@ -58,23 +60,31 @@ public class Expense extends Transaction {
         this.paymentType = paymentType;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     public void paymentOfInstallments() {
         this.installmentsPaid++;
         if (this.installmentsPaid == 1) {
             System.out.println(this.installmentsPaid + "st installment paid!");
-        }else if(this.installmentsPaid == 2){
+        } else if (this.installmentsPaid == 2) {
             System.out.println(this.installmentsPaid + "nd installment paid!");
-        }else if(this.installmentsPaid == 3){
+        } else if (this.installmentsPaid == 3) {
             System.out.println(this.installmentsPaid + "rd installment paid!");
-        }else{
-        System.out.println(this.installmentsPaid + "th installment paid!");
+        } else {
+            System.out.println(this.installmentsPaid + "th installment paid!");
         }
     }
 
     @Override
     public Transaction duplicate() {
-        return new Expense(this.getUser_id(), this.getTransactionValue(), this.getDescription(),
-                this.getClassification(), this.getIsRecurring(), 1, 0, this.paymentResponsible, this.paymentType);
+        return new Expense(this.getBankAccountId(), this.getTransactionValue(), this.getDescription(),
+                this.getIsRecurring(), 1, 0, this.paymentResponsible, this.paymentType, this.category);
     }
 
     @Override
@@ -85,6 +95,7 @@ public class Expense extends Transaction {
                 ", paymentResponsible='" + paymentResponsible + '\'' +
                 ", paymentType=" + paymentType +
                 ", installmentsTotal=" + installmentsTotal +
+                ", category=" + category +
                 '}';
     }
 }
