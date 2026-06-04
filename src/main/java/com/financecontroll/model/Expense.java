@@ -12,6 +12,7 @@ public class Expense extends Transaction {
     private String paymentResponsible;
     private PaymentType paymentType;
     private Category category;
+
     public Expense() {
     }
 
@@ -67,7 +68,10 @@ public class Expense extends Transaction {
         this.category = category;
     }
 
-    public void paymentOfInstallments() {
+    public void payInstallment() {
+        if (this.installmentsTotal == this.installmentsPaid) {
+            return;
+        }
         this.installmentsPaid++;
         if (this.installmentsPaid == 1) {
             System.out.println(this.installmentsPaid + "st installment paid!");
@@ -78,11 +82,7 @@ public class Expense extends Transaction {
         } else {
             System.out.println(this.installmentsPaid + "th installment paid!");
         }
-    }
 
-    private Transaction createNewInstallmentExpense() {
-        if(this.installmentsPaid == this.installmentsTotal) {
-        }
     }
 
     @Override
