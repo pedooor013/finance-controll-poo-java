@@ -1,4 +1,4 @@
-﻿package com.financecontroll.model.dao;
+package com.financecontroll.model.dao;
 
 public class UserDAO {
 }

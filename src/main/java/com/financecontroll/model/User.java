@@ -1,4 +1,4 @@
-﻿package com.financecontroll.model;
+package com.financecontroll.model;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

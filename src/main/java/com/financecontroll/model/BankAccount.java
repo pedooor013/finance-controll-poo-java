@@ -1,4 +1,4 @@
-﻿package com.financecontroll.model;
+package com.financecontroll.model;
 
 public class BankAccount {
     private int id;
