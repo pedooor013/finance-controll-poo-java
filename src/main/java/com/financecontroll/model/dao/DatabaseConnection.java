@@ -14,10 +14,10 @@ public class DatabaseConnection {
         try {
             Properties props = new Properties();
             InputStream input = getClass().getClassLoader().getResourceAsStream("db.properties");
-            props.load(input);
             if (input == null) {
                 throw new RuntimeException("db.properties not found!");
             }
+            props.load(input);
             String url = props.getProperty("db.url");
             String user = props.getProperty("db.user");
             String password = props.getProperty("db.password");
