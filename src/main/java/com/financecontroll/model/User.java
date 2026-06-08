@@ -4,6 +4,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 
+import static com.financecontroll.util.PasswordIUtils.hashPassword;
+
 public class User {
     private int id;
     private String username;
@@ -18,6 +20,13 @@ public class User {
         this.username = username;
         this.userEmail = userEmail;
         this.password = hashPassword(password);
+        this.userBankAccount = new ArrayList<BankAccount>();
+    }
+
+    public User(int id, String username, String userEmail) {
+        this.id = id;
+        this.username = username;
+        this.userEmail = userEmail;
         this.userBankAccount = new ArrayList<BankAccount>();
     }
 
@@ -57,17 +66,4 @@ public class User {
         this.userBankAccount = userBankAccount;
     }
 
-    private String hashPassword(String password) {
-        try {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            byte[] hash = md.digest(password.getBytes());
-            StringBuilder hexString = new StringBuilder();
-            for (byte b : hash) {
-                hexString.append(String.format("%02x", b));
-            }
-            return hexString.toString();
-        } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("Error hashing password", e);
-        }
-    }
 }
