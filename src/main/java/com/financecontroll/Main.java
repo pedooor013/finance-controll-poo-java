@@ -1,6 +1,8 @@
 package com.financecontroll;
 
+import com.financecontroll.model.BankAccount;
 import com.financecontroll.model.User;
+import com.financecontroll.model.dao.BankAccountDAO;
 import com.financecontroll.model.dao.DatabaseConnection;
 import com.financecontroll.model.dao.UserDAO;
 
@@ -14,13 +16,19 @@ class Main {
 
         UserDAO userDAO = new UserDAO();
 
-    // Cadastra um usuário
-        User user = new User("Pedro", "pedro@email.com", "123456");
-        userDAO.save(user);
-        System.out.println("User saved!");
 
-    // Verifica login
-        boolean login = userDAO.checkUser("pedro@email.com", "123456");
-        System.out.println("Login: " + login);
+        BankAccountDAO bankAccountDAO = new BankAccountDAO();
+
+        BankAccount bankAccount = new BankAccount("nubank", 1);
+        bankAccountDAO.save(bankAccount);
+        System.out.println("Bank account saved!");
+
+        BankAccount bankAccount2 = new BankAccount("bradesco", 1);
+        bankAccountDAO.save(bankAccount2);
+        System.out.println("Bank account saved!");
+
+        System.out.println(bankAccountDAO.findBankAccountsByName("nubank"));
+        System.out.println(bankAccountDAO.findBankAccountsByUserId(1));;
+
     }
 }

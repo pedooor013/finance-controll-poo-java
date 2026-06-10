@@ -12,6 +12,11 @@ public class BankAccount {
         this.bankName = bankName.toUpperCase();
         this.userId = userId;
     }
+    public BankAccount(int id, String bankName, int userId) {
+        this.id = id;
+        this.bankName = bankName.toUpperCase();
+        this.userId = userId;
+    }
 
     public int getId(){
         return this.id;
