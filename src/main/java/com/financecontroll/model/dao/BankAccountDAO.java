@@ -18,6 +18,9 @@ public class BankAccountDAO {
     }
 
     public void save(BankAccount bankAccount) throws SQLException {
+        if(existsByNameAndUserId(bankAccount.getBankName(), bankAccount.getUserId())){
+            throw new SQLException("Bank account already exists");
+        }
         String sql = "INSERT INTO bank_accounts (bank_name, fk_user_id) VALUES (?, ?)";
         PreparedStatement stmt = connection.prepareStatement(sql);
         stmt.setString(1, bankAccount.getBankName());
@@ -58,5 +61,16 @@ public class BankAccountDAO {
                     rs.getInt("fk_user_id")));
         }
         return accounts;
+    }
+
+    private boolean existsByNameAndUserId(String bankName, int userId) throws SQLException {
+        String sql = "SELECT id FROM bank_accounts WHERE bank_name = ? AND fk_user_id = ?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setString(1, bankName);
+        stmt.setInt(2, userId);
+
+        ResultSet rs = stmt.executeQuery();
+
+        return rs.next();
     }
 }
