@@ -1,10 +1,15 @@
 package com.financecontroll.model.dao;
 
+import com.financecontroll.model.Category;
 import com.financecontroll.model.Expense;
+import com.financecontroll.model.PaymentType;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.List;
 
 public class ExpenseDAO {
 
@@ -38,4 +43,47 @@ public class ExpenseDAO {
             connection.setAutoCommit(true);
         }
     }
+    //Proximas implementaçoes
+    public Expense findById(int id) throws SQLException {
+        String sql = "SELECT " +
+                "* " +
+                "FROM transactions t " +
+                "INNER JOIN " +
+                "expenses e " +
+                "ON " +
+                "t.id = e.fk_transactions_id " +
+                "WHERE t.id = ?";
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+
+        if(rs.next()){
+            Category category = new CategoryDAO().getCategoryById(rs.getInt("fk_categories_id"));
+
+            return new Expense(rs.getInt("id"),
+                                rs.getInt("fk_bank_account_id"),
+                    rs.getDate("date_transaction").toLocalDate(),
+                    rs.getDouble("transaction_value"),
+                    rs.getString("description"),
+                    rs.getBoolean("is_recurring"),
+                    rs.getInt("installments_total"),
+                    rs.getInt("installments_paid"),
+                    rs.getString("payment_responsible"),
+                    PaymentType.valueOf(rs.getString("payment_type")),
+                    category
+                        );
+        }
+
+        return null;
+    }
+
+    public List<Expense> findByUserId(int userId){
+    }
+
+    public List<Expense> findByPeriod(int userId, LocalDate startDate, LocalDate endDate){
+    }
+
+    public void delete(int id) throws SQLException {
+    }
+    public boolean update(Expense expense) throws SQLException{}
 }
