@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryDAO {
-    Connection connection;
+    private Connection connection;
 
     public CategoryDAO() {
         this.connection = DatabaseConnection.getInstance().getConnection();
