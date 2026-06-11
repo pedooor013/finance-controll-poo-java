@@ -23,7 +23,13 @@ public class Expense extends Transaction {
         this.paymentType = paymentType;
         this.category = category;
     }
-    public Expense(int id, int bankAccountId, LocalDate dateTimeTransaction, double transactionValue, String description, boolean isRecurring, int installmentsTotal, int installmentsPaid, String paymentResponsible, PaymentType paymentType, Category category) {
+    public Expense(int id, int bankAccountId,
+                   LocalDate dateTimeTransaction, double transactionValue,
+                   String description, boolean isRecurring,
+                   int installmentsTotal, int installmentsPaid,
+                   String paymentResponsible, PaymentType paymentType,
+                   Category category) {
+
         super(id, bankAccountId, dateTimeTransaction, transactionValue, description, isRecurring, TransactionType.EXPENSE);
         if (isRecurring && installmentsTotal > 1) {
             throw new IllegalArgumentException("You can't create a recurring expense with more than 1 installment");
