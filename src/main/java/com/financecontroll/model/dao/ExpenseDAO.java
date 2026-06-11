@@ -80,6 +80,7 @@ public class ExpenseDAO {
 
         return null;
     }
+
     public List<Expense> findByUserId(int userId) throws SQLException {
         String sql = "SELECT " +
                 "t.id AS transaction_id, ba.id AS bank_account_id, ba.name, t.date_transaction, t.transaction_value, t.description, t.is_recurring, e.installments_total, e.installments_paid, e.payment_responsible, e.payment_type, e.fk_categories_id " +
@@ -110,13 +111,49 @@ public class ExpenseDAO {
         return expenses;
     }
 
-    public List<Expense> findByPeriod(int userId, LocalDate startDate, LocalDate endDate) {
+    public List<Expense> findByPeriod(int userId, LocalDate startDate, LocalDate endDate) throws SQLException {
+        String sql = "SELECT " +
+                "t.id AS transaction_id, ba.id AS bank_account_id, ba.name, t.date_transaction, t.transaction_value, t.description, t.is_recurring, e.installments_total, e.installments_paid, e.payment_responsible, e.payment_type, e.fk_categories_id " +
+                "FROM " +
+                "transactions t " +
+                "INNER JOIN " +
+                "expenses e " +
+                "ON t.id = e.fk_transactions_id " +
+                "INNER JOIN " +
+                "bank_accounts ba " +
+                "ON t.fk_bank_account_id = ba.id " +
+                "WHERE ba.fk_user_id = ? AND t.date_transaction BETWEEN ? AND ?";
 
+        PreparedStatement stmt = connection.prepareStatement(sql);
+        stmt.setInt(1, userId);
+        stmt.setDate(2, java.sql.Date.valueOf(startDate));
+        stmt.setDate(3, java.sql.Date.valueOf(endDate));
+        ResultSet rs = stmt.executeQuery();
+
+        List<Expense> expenses = new ArrayList<>();
+
+        while (rs.next()) {
+            expenses.add(new Expense(
+                    rs.getInt("transaction_id"),
+                    rs.getInt("bank_account_id"),
+                    rs.getDate("date_transaction").toLocalDate(),
+                    rs.getDouble("transaction_value"),
+                    rs.getString("description"),
+                    rs.getBoolean("is_recurring"),
+                    rs.getInt("installments_total"),
+                    rs.getInt("installments_paid"),
+                    rs.getString("payment_responsible"),
+                    PaymentType.valueOf(rs.getString("payment_type")),
+                    new CategoryDAO().getCategoryById(rs.getInt("fk_categories_id"))));
+        }
+        return expenses;
     }
 
     public void delete(int id) throws SQLException {
+        String sql = "";
     }
 
     public boolean update(Expense expense) throws SQLException {
+
     }
 }
