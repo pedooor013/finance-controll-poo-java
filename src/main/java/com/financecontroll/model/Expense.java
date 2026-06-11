@@ -1,11 +1,5 @@
 package com.financecontroll.model;
 
-enum PaymentType {
-    PIX,
-    DEBITO,
-    CREDITO
-}
-
 public class Expense extends Transaction {
     private int installmentsTotal;
     private int installmentsPaid;
