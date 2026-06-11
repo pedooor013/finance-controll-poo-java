@@ -1,10 +1,6 @@
 package com.financecontroll.model;
 
-enum PaymentType {
-    PIX,
-    DEBITO,
-    CREDITO
-}
+import java.time.LocalDate;
 
 public class Expense extends Transaction {
     private int installmentsTotal;
@@ -13,11 +9,22 @@ public class Expense extends Transaction {
     private PaymentType paymentType;
     private Category category;
 
-    public Expense() {
+    public Expense(int bankAccountId, double transactionValue, String description, boolean isRecurring, int i, int i1, String paymentResponsible, PaymentType paymentType, Category category) {
     }
 
-    public Expense(int bankAccountId, double transactionValue, String description, boolean isRecurring, int installmentsTotal, int installmentsPaid, String paymentResponsible, PaymentType paymentType, Category category) {
-        super(bankAccountId, transactionValue, description, isRecurring, TransactionType.EXPENSE);
+    public Expense(int id, int bankAccountId, double transactionValue, String description, boolean isRecurring, int installmentsTotal, int installmentsPaid, String paymentResponsible, PaymentType paymentType, Category category) {
+        super(id, bankAccountId, transactionValue, description, isRecurring, TransactionType.EXPENSE);
+        if (isRecurring && installmentsTotal > 1) {
+            throw new IllegalArgumentException("You can't create a recurring expense with more than 1 installment");
+        }
+        this.installmentsTotal = installmentsTotal;
+        this.installmentsPaid = installmentsPaid;
+        this.paymentResponsible = paymentResponsible;
+        this.paymentType = paymentType;
+        this.category = category;
+    }
+    public Expense(int id, int bankAccountId, LocalDate dateTimeTransaction, double transactionValue, String description, boolean isRecurring, int installmentsTotal, int installmentsPaid, String paymentResponsible, PaymentType paymentType, Category category) {
+        super(id, bankAccountId, dateTimeTransaction, transactionValue, description, isRecurring, TransactionType.EXPENSE);
         if (isRecurring && installmentsTotal > 1) {
             throw new IllegalArgumentException("You can't create a recurring expense with more than 1 installment");
         }
