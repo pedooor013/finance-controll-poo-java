@@ -19,7 +19,7 @@ public class ExpenseDAO {
             connection.setAutoCommit(false);
             int transactionId = transactionDAO.save(expense);
 
-            String sql = "INSERT INTO expenses(fk_transaction_id, installments_total, installments_paid, payment_responsible, payment_type, fk_categories_id) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO expenses(fk_transactions_id, installments_total, installments_paid, payment_responsible, payment_type, fk_categories_id) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = connection.prepareStatement(sql);
             stmt.setInt(1, transactionId);
             stmt.setInt(2, expense.getInstallmentsTotal());
