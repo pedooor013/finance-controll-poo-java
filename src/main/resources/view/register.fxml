@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.financecontroll.controller.RegisterController"
+           stylesheets="@../styles/styles.css">
+
+    <HBox>
+        <!-- Painel esquerdo -->
+        <VBox styleClass="left-panel" prefWidth="450" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="10">
+            <Label text="Finance Control" styleClass="brand-title"/>
+            <Label text="Crie sua conta e comece a controlar suas finanças hoje mesmo." styleClass="brand-subtitle" wrapText="true"/>
+        </VBox>
+
+        <!-- Painel direito -->
+        <VBox styleClass="right-panel" prefWidth="450" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="16">
+            <Label text="Criar conta" styleClass="form-title"/>
+            <Label text="Preencha os dados abaixo para se cadastrar." styleClass="form-subtitle"/>
+
+            <VBox spacing="6" maxWidth="360">
+                <Label text="Nome" styleClass="field-label"/>
+                <TextField fx:id="usernameField" promptText="Seu nome" styleClass="input-field" maxWidth="Infinity"/>
+            </VBox>
+
+            <VBox spacing="6" maxWidth="360">
+                <Label text="Email" styleClass="field-label"/>
+                <TextField fx:id="emailField" promptText="seu@email.com" styleClass="input-field" maxWidth="Infinity"/>
+            </VBox>
+
+            <VBox spacing="6" maxWidth="360">
+                <Label text="Senha" styleClass="field-label"/>
+                <PasswordField fx:id="passwordField" promptText="••••••••" styleClass="input-field" maxWidth="Infinity"/>
+            </VBox>
+
+            <VBox spacing="6" maxWidth="360">
+                <Label text="Confirmar Senha" styleClass="field-label"/>
+                <PasswordField fx:id="confirmPasswordField" promptText="••••••••" styleClass="input-field" maxWidth="Infinity"/>
+            </VBox>
+
+            <Label fx:id="errorLabel" styleClass="error-label" text="" wrapText="true" maxWidth="360"/>
+
+            <Button text="Cadastrar" styleClass="primary-button" onAction="#handleRegister" maxWidth="360"/>
+
+            <HBox alignment="CENTER" spacing="4">
+                <Label text="Já tem uma conta?" styleClass="form-subtitle"/>
+                <Hyperlink text="Entrar" styleClass="link" onAction="#handleGoToLogin"/>
+            </HBox>
+        </VBox>
+    </HBox>
+
+</StackPane>

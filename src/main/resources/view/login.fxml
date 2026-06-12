@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane xmlns="http://javafx.com/javafx"
+           xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.financecontroll.controller.LoginController"
+           stylesheets="@../styles/styles.css">
+
+    <HBox>
+        <!-- Painel esquerdo -->
+        <VBox styleClass="left-panel" prefWidth="450" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="10">
+            <Label text="Finance Control" styleClass="brand-title"/>
+            <Label text="Gerencie suas finanças de forma simples e inteligente." styleClass="brand-subtitle" wrapText="true"/>
+        </VBox>
+
+        <!-- Painel direito -->
+        <VBox styleClass="right-panel" prefWidth="450" HBox.hgrow="ALWAYS" alignment="CENTER" spacing="16">
+            <Label text="Bem-vindo de volta!" styleClass="form-title"/>
+            <Label text="Entre na sua conta para continuar." styleClass="form-subtitle"/>
+
+            <VBox spacing="6" maxWidth="360">
+                <Label text="Email" styleClass="field-label"/>
+                <TextField fx:id="emailField" promptText="seu@email.com" styleClass="input-field" maxWidth="Infinity"/>
+            </VBox>
+
+            <VBox spacing="6" maxWidth="360">
+                <Label text="Senha" styleClass="field-label"/>
+                <PasswordField fx:id="passwordField" promptText="••••••••" styleClass="input-field" maxWidth="Infinity"/>
+            </VBox>
+
+            <Label fx:id="errorLabel" styleClass="error-label" text="" wrapText="true" maxWidth="360"/>
+
+            <Button text="Entrar" styleClass="primary-button" onAction="#handleLogin" maxWidth="360"/>
+
+            <HBox alignment="CENTER" spacing="4">
+                <Label text="Não tem uma conta?" styleClass="form-subtitle"/>
+                <Hyperlink text="Cadastre-se" styleClass="link" onAction="#handleGoToRegister"/>
+            </HBox>
+        </VBox>
+    </HBox>
+
+</StackPane>

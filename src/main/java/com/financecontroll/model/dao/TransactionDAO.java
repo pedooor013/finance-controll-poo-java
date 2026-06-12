@@ -15,21 +15,47 @@ public class TransactionDAO {
 
     public int save(Transaction transaction) throws SQLException {
         String sql = "INSERT INTO transactions (fk_bank_account_id, date_transaction, transaction_value, description, is_recurring, transaction_type) VALUES (?, ?, ?, ?, ?, ?)";
-        PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);        stmt.setInt(1, transaction.getBankAccountId());
-        stmt.setDate(2, Date.valueOf(transaction.getDateTimeTransaction()));
-        stmt.setDouble(3, transaction.getTransactionValue());
-        stmt.setString(4, transaction.getDescription());
-        stmt.setBoolean(5, transaction.getIsRecurring());
-        stmt.setString(6, String.valueOf(transaction.getTransactionType()));
-
-        stmt.executeUpdate();
-
-        ResultSet keys = stmt.getGeneratedKeys();
-        if(keys.next()){
-            return keys.getInt(1);
+        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setInt(1, transaction.getBankAccountId());
+            stmt.setDate(2, Date.valueOf(transaction.getDateTimeTransaction()));
+            stmt.setDouble(3, transaction.getTransactionValue());
+            stmt.setString(4, transaction.getDescription());
+            stmt.setBoolean(5, transaction.getIsRecurring());
+            stmt.setString(6, String.valueOf(transaction.getTransactionType()));
+            stmt.executeUpdate();
+            ResultSet keys = stmt.getGeneratedKeys();
+            if(keys.next()){
+                return keys.getInt(1);
+            }
         }
-
         throw new RuntimeException("Failed to save transaction");
     }
+
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM transactions WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
+    public void update(Transaction transaction) throws SQLException {
+
+        String sql = "UPDATE transactions SET date_transaction = ?, transaction_value = ?, description = ?, is_recurring = ?, transaction_type = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setDate(1, Date.valueOf(transaction.getDateTimeTransaction()));
+            stmt.setDouble(2, transaction.getTransactionValue());
+            stmt.setString(3, transaction.getDescription());
+            stmt.setBoolean(4, transaction.getIsRecurring());
+            stmt.setString(5, String.valueOf(transaction.getTransactionType()));
+            stmt.setInt(6, transaction.getId());
+
+            stmt.executeUpdate();
+        }catch(SQLException e){
+            throw new RuntimeException(e);
+        }
+    }
+
 
 }

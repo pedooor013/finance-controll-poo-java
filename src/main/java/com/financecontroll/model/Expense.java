@@ -9,7 +9,13 @@ public class Expense extends Transaction {
     private PaymentType paymentType;
     private Category category;
 
-    public Expense(int bankAccountId, double transactionValue, String description, boolean isRecurring, int i, int i1, String paymentResponsible, PaymentType paymentType, Category category) {
+    public Expense(int bankAccountId, double transactionValue, String description, boolean isRecurring, int installmentsTotal, int installmentsPaid, String paymentResponsible, PaymentType paymentType, Category category) {
+        super(bankAccountId, transactionValue, description, isRecurring, TransactionType.EXPENSE);
+        this.installmentsTotal = installmentsTotal;
+        this.installmentsPaid = installmentsPaid;
+        this.paymentResponsible = paymentResponsible;
+        this.paymentType = paymentType;
+        this.category = category;
     }
 
     public Expense(int id, int bankAccountId, double transactionValue, String description, boolean isRecurring, int installmentsTotal, int installmentsPaid, String paymentResponsible, PaymentType paymentType, Category category) {

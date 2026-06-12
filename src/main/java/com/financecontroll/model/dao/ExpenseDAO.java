@@ -47,43 +47,37 @@ public class ExpenseDAO {
         }
     }
 
-    //Proximas implementaçoes
     public Expense findById(int id) throws SQLException {
-        String sql = "SELECT " +
-                "* " +
+        String sql = "SELECT t.id AS transaction_id, t.fk_bank_account_id AS bank_account_id, t.date_transaction, t.transaction_value, t.description, t.is_recurring, e.installments_total, e.installments_paid, e.payment_responsible, e.payment_type, e.fk_categories_id " +
                 "FROM transactions t " +
-                "INNER JOIN " +
-                "expenses e " +
-                "ON " +
-                "t.id = e.fk_transactions_id " +
+                "INNER JOIN expenses e ON t.id = e.fk_transactions_id " +
                 "WHERE t.id = ?";
-        PreparedStatement stmt = connection.prepareStatement(sql);
-        stmt.setInt(1, id);
-        ResultSet rs = stmt.executeQuery();
-
-        if (rs.next()) {
-            Category category = new CategoryDAO().getCategoryById(rs.getInt("fk_categories_id"));
-
-            return new Expense(rs.getInt("id"),
-                    rs.getInt("fk_bank_account_id"),
-                    rs.getDate("date_transaction").toLocalDate(),
-                    rs.getDouble("transaction_value"),
-                    rs.getString("description"),
-                    rs.getBoolean("is_recurring"),
-                    rs.getInt("installments_total"),
-                    rs.getInt("installments_paid"),
-                    rs.getString("payment_responsible"),
-                    PaymentType.valueOf(rs.getString("payment_type")),
-                    category
-            );
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Category category = new CategoryDAO().getCategoryById(rs.getInt("fk_categories_id"));
+                return new Expense(
+                        rs.getInt("transaction_id"),
+                        rs.getInt("bank_account_id"),
+                        rs.getDate("date_transaction").toLocalDate(),
+                        rs.getDouble("transaction_value"),
+                        rs.getString("description"),
+                        rs.getBoolean("is_recurring"),
+                        rs.getInt("installments_total"),
+                        rs.getInt("installments_paid"),
+                        rs.getString("payment_responsible"),
+                        PaymentType.valueOf(rs.getString("payment_type")),
+                        category
+                );
+            }
+            return null;
         }
-
-        return null;
     }
 
     public List<Expense> findByUserId(int userId) throws SQLException {
         String sql = "SELECT " +
-                "t.id AS transaction_id, ba.id AS bank_account_id, ba.name, t.date_transaction, t.transaction_value, t.description, t.is_recurring, e.installments_total, e.installments_paid, e.payment_responsible, e.payment_type, e.fk_categories_id " +
+                "t.id AS transaction_id, ba.id AS bank_account_id, ba.bank_name, t.date_transaction, t.transaction_value, t.description, t.is_recurring, e.installments_total, e.installments_paid, e.payment_responsible, e.payment_type, e.fk_categories_id " +
                 "FROM " +
                 "transactions t " +
                 "INNER JOIN " +
@@ -101,19 +95,25 @@ public class ExpenseDAO {
         List<Expense> expenses = new ArrayList<Expense>();
 
         while (rs.next()) {
-            expenses.add(new Expense(rs.getInt("t.id"), rs.getInt("ba.id"),
-                    rs.getDate("t.transaction_date").toLocalDate(), rs.getDouble("t.transaction_value"),
-                    rs.getString("t.description"), rs.getBoolean("t.is_recurring"),
-                    rs.getInt("e.installments_total "), rs.getInt("e.installments_paid"),
-                    rs.getString("e.payment_responsible"), PaymentType.valueOf(rs.getString("e.payment_type")),
-                    new CategoryDAO().getCategoryById(rs.getInt("e.fk_categories_id"))));
+            expenses.add(new Expense(
+                    rs.getInt("transaction_id"),
+                    rs.getInt("bank_account_id"),
+                    rs.getDate("date_transaction").toLocalDate(),
+                    rs.getDouble("transaction_value"),
+                    rs.getString("description"),
+                    rs.getBoolean("is_recurring"),
+                    rs.getInt("installments_total"),
+                    rs.getInt("installments_paid"),
+                    rs.getString("payment_responsible"),
+                    PaymentType.valueOf(rs.getString("payment_type")),
+                    new CategoryDAO().getCategoryById(rs.getInt("fk_categories_id"))));
         }
         return expenses;
     }
 
     public List<Expense> findByPeriod(int userId, LocalDate startDate, LocalDate endDate) throws SQLException {
         String sql = "SELECT " +
-                "t.id AS transaction_id, ba.id AS bank_account_id, ba.name, t.date_transaction, t.transaction_value, t.description, t.is_recurring, e.installments_total, e.installments_paid, e.payment_responsible, e.payment_type, e.fk_categories_id " +
+                "t.id AS transaction_id, ba.id AS bank_account_id, ba.bank_name, t.date_transaction, t.transaction_value, t.description, t.is_recurring, e.installments_total, e.installments_paid, e.payment_responsible, e.payment_type, e.fk_categories_id " +
                 "FROM " +
                 "transactions t " +
                 "INNER JOIN " +
@@ -150,10 +150,54 @@ public class ExpenseDAO {
     }
 
     public void delete(int id) throws SQLException {
-        String sql = "";
+        try {
+            connection.setAutoCommit(false);
+
+            String sql = "DELETE FROM expenses WHERE fk_transactions_id = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setInt(1, id);
+                stmt.executeUpdate();
+            }
+
+            TransactionDAO transactionDAO = new TransactionDAO();
+            transactionDAO.delete(id);
+
+            connection.commit();
+
+        } catch (SQLException e) {
+            connection.rollback();
+            throw new RuntimeException(e);
+        } finally {
+            connection.setAutoCommit(true);
+        }
     }
 
-    public boolean update(Expense expense) throws SQLException {
+    public void update(Expense expense) throws SQLException {
+        try {
+            connection.setAutoCommit(false);
 
+            String sql = "UPDATE expenses SET installments_total = ?, installments_paid = ?, payment_responsible = ?, payment_type = ?, fk_categories_id = ? WHERE fk_transactions_id = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setInt(1, expense.getInstallmentsTotal());
+                stmt.setInt(2, expense.getInstallmentsPaid());
+                stmt.setString(3, expense.getPaymentResponsible());
+                stmt.setString(4, expense.getPaymentType().toString());
+                stmt.setInt(5, expense.getCategory().getId());
+                stmt.setInt(6, expense.getId());
+
+                stmt.executeUpdate();
+            }
+
+            TransactionDAO transactionDAO = new TransactionDAO();
+            transactionDAO.update(expense);
+
+            connection.commit();
+
+        } catch (Exception e) {
+            connection.rollback();
+            throw new RuntimeException(e);
+        } finally {
+            connection.setAutoCommit(true);
+        }
     }
 }

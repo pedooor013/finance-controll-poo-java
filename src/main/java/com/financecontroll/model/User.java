@@ -66,4 +66,13 @@ public class User {
         this.userBankAccount = userBankAccount;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", userEmail='" + userEmail + '\'' +
+                '}';
+    }
+
 }

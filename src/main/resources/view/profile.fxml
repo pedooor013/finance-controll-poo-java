@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.financecontroll.controller.ProfileController"
+      stylesheets="@../styles/styles.css">
+
+    <!-- Menu Lateral -->
+    <VBox styleClass="sidebar" prefWidth="220" minWidth="220" maxWidth="220" spacing="8">
+        <Label text="Finance Control" styleClass="brand-title-small"/>
+
+        <VBox spacing="4" VBox.vgrow="ALWAYS">
+            <Button text="🏠  Dashboard" styleClass="sidebar-button" maxWidth="Infinity" onAction="#handleDashboard"/>
+            <Button text="👤  Perfil" styleClass="sidebar-button-active" maxWidth="Infinity"/>
+            <Button text="🏦  Contas Bancárias" styleClass="sidebar-button" maxWidth="Infinity" onAction="#handleContas"/>
+            <Button fx:id="relatoriosBtn" text="📊  Relatórios" styleClass="sidebar-button-disabled" maxWidth="Infinity"/>
+        </VBox>
+
+        <Button text="🚪  Logout" styleClass="sidebar-logout" maxWidth="Infinity" onAction="#handleLogout"/>
+    </VBox>
+
+    <!-- Conteúdo Principal -->
+    <VBox styleClass="main-content" HBox.hgrow="ALWAYS" spacing="24">
+        <padding>
+            <Insets top="32" right="32" bottom="32" left="32"/>
+        </padding>
+
+        <Label text="Meu Perfil" styleClass="form-title"/>
+        <Label text="Atualize suas informações pessoais." styleClass="form-subtitle"/>
+
+        <VBox spacing="6" maxWidth="400">
+            <Label text="Nome" styleClass="field-label"/>
+            <TextField fx:id="usernameField" styleClass="input-field" maxWidth="Infinity"/>
+        </VBox>
+
+        <VBox spacing="6" maxWidth="400">
+            <Label text="Email" styleClass="field-label"/>
+            <TextField fx:id="emailField" styleClass="input-field" maxWidth="Infinity"/>
+        </VBox>
+
+        <VBox spacing="6" maxWidth="400">
+            <Label text="Nova Senha" styleClass="field-label"/>
+            <PasswordField fx:id="passwordField" promptText="Deixe em branco para não alterar" styleClass="input-field" maxWidth="Infinity"/>
+        </VBox>
+
+        <VBox spacing="6" maxWidth="400">
+            <Label text="Confirmar Nova Senha" styleClass="field-label"/>
+            <PasswordField fx:id="confirmPasswordField" promptText="Deixe em branco para não alterar" styleClass="input-field" maxWidth="Infinity"/>
+        </VBox>
+
+        <Label fx:id="errorLabel" styleClass="error-label" text="" wrapText="true" maxWidth="400"/>
+        <Label fx:id="successLabel" styleClass="success-label" text="" wrapText="true" maxWidth="400"/>
+
+        <Button text="Salvar Alterações" styleClass="primary-button" onAction="#handleSave" maxWidth="400"/>
+
+    </VBox>
+
+</HBox>
