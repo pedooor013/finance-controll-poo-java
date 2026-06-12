@@ -60,6 +60,14 @@ public class BankAccountDAO {
         }
     }
 
+    public void delete(int id) throws SQLException {
+        String sql = "DELETE FROM bank_accounts WHERE id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+        }
+    }
+
     private boolean existsByNameAndUserId(String bankName, int userId) throws SQLException {
         String sql = "SELECT id FROM bank_accounts WHERE bank_name = ? AND fk_user_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
