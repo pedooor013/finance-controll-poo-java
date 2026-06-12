@@ -1,5 +1,7 @@
 package com.financecontroll.model;
 
+import java.time.LocalDate;
+
 public class Income extends Transaction {
 
     public Income() {
@@ -7,6 +9,10 @@ public class Income extends Transaction {
 
     public Income(int bankAccountId, double transactionValue, String description, boolean isRecurring) {
         super(bankAccountId, transactionValue, description, isRecurring, TransactionType.INCOME);
+    }
+
+    public Income(int id, int bankAccountId, LocalDate dateTimeTransaction, double transactionValue, String description, boolean isRecurring) {
+        super(id, bankAccountId, dateTimeTransaction, transactionValue, description, isRecurring, TransactionType.INCOME);
     }
 
     @Override
@@ -18,7 +24,7 @@ public class Income extends Transaction {
     public String toString() {
         return "Income{" +
                 "id=" + super.getId() +
-                ", =" + super.getBankAccountId() +
+                ", bankAccountId=" + super.getBankAccountId() +
                 ", dateTimeTransaction=" + super.getDateTimeTransaction() +
                 ", transactionValue=" + super.getTransactionValue() +
                 ", description='" + super.getDescription() + '\'' +
