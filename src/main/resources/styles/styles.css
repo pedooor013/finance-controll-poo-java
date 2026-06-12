@@ -94,3 +94,188 @@
     -fx-text-fill: #DC2626;
     -fx-font-size: 12px;
 }
+
+/* === SIDEBAR === */
+.sidebar {
+    -fx-background-color: #1E1B2E;
+    -fx-padding: 24 16 24 16;
+    -fx-spacing: 8;
+}
+
+.brand-title-small {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 16 0;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #A0AEC0;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 16;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: #2D2A3E;
+    -fx-text-fill: #FFFFFF;
+}
+
+.sidebar-button-active {
+    -fx-background-color: #7C3AED;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 16;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.sidebar-button-disabled {
+    -fx-background-color: transparent;
+    -fx-text-fill: #4A5568;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 16;
+    -fx-background-radius: 8;
+    -fx-cursor: default;
+}
+
+.sidebar-logout {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FC8181;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 16;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.sidebar-logout:hover {
+    -fx-background-color: #2D2A3E;
+}
+
+/* === MAIN CONTENT === */
+.main-content {
+    -fx-background-color: #F7F8FC;
+}
+
+.section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1F1F1F;
+}
+
+/* === CARDS === */
+.card-income {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+}
+
+.card-expense {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 12;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 8, 0, 0, 2);
+}
+
+.card-balance {
+    -fx-background-color: #7C3AED;
+    -fx-background-radius: 12;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(124,58,237,0.3), 8, 0, 0, 2);
+}
+
+.card-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6B7280;
+    -fx-font-weight: bold;
+}
+
+.card-value-income {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #10B981;
+}
+
+.card-value-expense {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #EF4444;
+}
+
+.card-value-balance {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #FFFFFF;
+}
+
+/* === TRANSAÇÕES === */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.transaction-month-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6B7280;
+    -fx-padding: 16 0 8 0;
+}
+
+.transaction-item {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 14 16;
+    -fx-border-color: #F3F4F6;
+    -fx-border-width: 0 0 1 0;
+}
+
+.transaction-item-old {
+    -fx-background-color: #F9FAFB;
+    -fx-padding: 14 16;
+    -fx-border-color: #F3F4F6;
+    -fx-border-width: 0 0 1 0;
+}
+
+.transaction-description {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1F1F1F;
+}
+
+.transaction-date {
+    -fx-font-size: 11px;
+    -fx-text-fill: #9CA3AF;
+}
+
+.transaction-value-income {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #10B981;
+}
+
+.transaction-value-expense {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #EF4444;
+}
+
+.arrow-income {
+    -fx-text-fill: #7C3AED;
+    -fx-font-size: 16px;
+}
+
+.arrow-expense {
+    -fx-text-fill: #EF4444;
+    -fx-font-size: 16px;
+}
