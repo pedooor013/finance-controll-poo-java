@@ -22,55 +22,51 @@ public class BankAccountDAO {
             throw new SQLException("Bank account already exists");
         }
         String sql = "INSERT INTO bank_accounts (bank_name, fk_user_id) VALUES (?, ?)";
-        PreparedStatement stmt = connection.prepareStatement(sql);
-        stmt.setString(1, bankAccount.getBankName());
-        stmt.setInt(2, bankAccount.getUserId());
-        stmt.executeUpdate();
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, bankAccount.getBankName());
+            stmt.setInt(2, bankAccount.getUserId());
+            stmt.executeUpdate();
+        }
     }
 
     public List<BankAccount> findBankAccountsByName(String bankName) throws SQLException {
         String sql = "SELECT * FROM bank_accounts WHERE bank_name LIKE ?";
-        PreparedStatement stmt = connection.prepareStatement(sql);
-        stmt.setString(1, "%" + bankName.toUpperCase() + "%");
-
-        ResultSet rs = stmt.executeQuery();
-
-        List<BankAccount> accounts = new ArrayList<BankAccount>();
-
-        while (rs.next()) {
-            accounts.add(new BankAccount(rs.getInt("id"),
-                    rs.getString("bank_name"),
-                    rs.getInt("fk_user_id")));
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, "%" + bankName.toUpperCase() + "%");
+            ResultSet rs = stmt.executeQuery();
+            List<BankAccount> accounts = new ArrayList<BankAccount>();
+            while (rs.next()) {
+                accounts.add(new BankAccount(rs.getInt("id"),
+                        rs.getString("bank_name"),
+                        rs.getInt("fk_user_id")));
+            }
+            return accounts;
         }
-        return accounts;
     }
 
 
     public List<BankAccount> findBankAccountsByUserId(int user_id) throws SQLException {
         String sql = "SELECT * FROM bank_accounts WHERE fk_user_id=?";
-        PreparedStatement stmt = connection.prepareStatement(sql);
-        stmt.setInt(1, user_id);
-
-        ResultSet rs = stmt.executeQuery();
-
-        List<BankAccount> accounts = new ArrayList<BankAccount>();
-
-        while (rs.next()) {
-            accounts.add(new BankAccount(rs.getInt("id"),
-                    rs.getString("bank_name"),
-                    rs.getInt("fk_user_id")));
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, user_id);
+            ResultSet rs = stmt.executeQuery();
+            List<BankAccount> accounts = new ArrayList<BankAccount>();
+            while (rs.next()) {
+                accounts.add(new BankAccount(rs.getInt("id"),
+                        rs.getString("bank_name"),
+                        rs.getInt("fk_user_id")));
+            }
+            return accounts;
         }
-        return accounts;
     }
 
     private boolean existsByNameAndUserId(String bankName, int userId) throws SQLException {
         String sql = "SELECT id FROM bank_accounts WHERE bank_name = ? AND fk_user_id = ?";
-        PreparedStatement stmt = connection.prepareStatement(sql);
-        stmt.setString(1, bankName);
-        stmt.setInt(2, userId);
-
-        ResultSet rs = stmt.executeQuery();
-
-        return rs.next();
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, bankName);
+            stmt.setInt(2, userId);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        }
     }
 }

@@ -64,8 +64,8 @@ public class ExpenseDAO {
         if (rs.next()) {
             Category category = new CategoryDAO().getCategoryById(rs.getInt("fk_categories_id"));
 
-            return new Expense(rs.getInt("id"),
-                    rs.getInt("fk_bank_account_id"),
+            return new Expense(rs.getInt("transaction_id"),
+                    rs.getInt("bank_account_id"),
                     rs.getDate("date_transaction").toLocalDate(),
                     rs.getDouble("transaction_value"),
                     rs.getString("description"),
@@ -101,12 +101,18 @@ public class ExpenseDAO {
         List<Expense> expenses = new ArrayList<Expense>();
 
         while (rs.next()) {
-            expenses.add(new Expense(rs.getInt("t.id"), rs.getInt("ba.id"),
-                    rs.getDate("t.transaction_date").toLocalDate(), rs.getDouble("t.transaction_value"),
-                    rs.getString("t.description"), rs.getBoolean("t.is_recurring"),
-                    rs.getInt("e.installments_total "), rs.getInt("e.installments_paid"),
-                    rs.getString("e.payment_responsible"), PaymentType.valueOf(rs.getString("e.payment_type")),
-                    new CategoryDAO().getCategoryById(rs.getInt("e.fk_categories_id"))));
+            expenses.add(new Expense(
+                    rs.getInt("transaction_id"),
+                    rs.getInt("bank_account_id"),
+                    rs.getDate("date_transaction").toLocalDate(),
+                    rs.getDouble("transaction_value"),
+                    rs.getString("description"),
+                    rs.getBoolean("is_recurring"),
+                    rs.getInt("installments_total"),
+                    rs.getInt("installments_paid"),
+                    rs.getString("payment_responsible"),
+                    PaymentType.valueOf(rs.getString("payment_type")),
+                    new CategoryDAO().getCategoryById(rs.getInt("fk_categories_id"))));
         }
         return expenses;
     }
@@ -150,7 +156,26 @@ public class ExpenseDAO {
     }
 
     public void delete(int id) throws SQLException {
-        String sql = "";
+        try {
+            connection.setAutoCommit(false);
+
+            String sql = "DELETE FROM expenses WHERE fk_transactions_id = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setInt(1, id);
+                stmt.executeUpdate();
+            }
+
+            TransactionDAO transactionDAO = new TransactionDAO();
+            transactionDAO.delete(id);
+
+            connection.commit();
+
+        } catch (SQLException e) {
+            connection.rollback();
+            throw new RuntimeException(e);
+        } finally {
+            connection.setAutoCommit(true);
+        }
     }
 
     public boolean update(Expense expense) throws SQLException {

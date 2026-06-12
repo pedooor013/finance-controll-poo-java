@@ -17,35 +17,36 @@ public class UserDAO {
 
     public void save(User user) throws SQLException {
         String sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
-        PreparedStatement stmt = connection.prepareStatement(sql);
-        stmt.setString(1, user.getUsername());
-        stmt.setString(2, user.getUserEmail());
-        stmt.setString(3, user.getPassword());
-        stmt.executeUpdate();
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, user.getUsername());
+            stmt.setString(2, user.getUserEmail());
+            stmt.setString(3, user.getPassword());
+            stmt.executeUpdate();
+        }
     }
 
     public User findByEmail(String email) throws SQLException {
         String sql = "SELECT id, username, email FROM users WHERE email = ?";
-        PreparedStatement stmt = connection.prepareStatement(sql);
-        stmt.setString(1, email);
-        ResultSet rs = stmt.executeQuery();
-
-        if(rs.next()){
-            return new User(rs.getInt("id"), rs.getString("username"), rs.getString("email"));
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                return new User(rs.getInt("id"), rs.getString("username"), rs.getString("email"));
+            }
+            return null;
         }
-        return null;
     }
 
     private String findUserPasswordById(int id) throws SQLException {
         String sql = "SELECT password FROM users WHERE id = ?";
-        PreparedStatement stmt = connection.prepareStatement(sql);
-        stmt.setInt(1, id);
-        ResultSet rs = stmt.executeQuery();
-
-        if(rs.next()){
-            return rs.getString("password");
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next()){
+                return rs.getString("password");
+            }
+            return null;
         }
-        return null;
     }
     private boolean checkPassword(String password, String userHashPassword){
         return userHashPassword.equals(hashPassword(password));
