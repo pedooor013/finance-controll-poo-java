@@ -25,6 +25,7 @@ public class TransactionDAO {
             stmt.executeUpdate();
             ResultSet keys = stmt.getGeneratedKeys();
             if(keys.next()){
+                return keys.getInt(1);
             }
         }
         throw new RuntimeException("Failed to save transaction");

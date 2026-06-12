@@ -47,43 +47,37 @@ public class ExpenseDAO {
         }
     }
 
-    //Proximas implementaçoes
     public Expense findById(int id) throws SQLException {
-        String sql = "SELECT " +
-                "* " +
+        String sql = "SELECT t.id AS transaction_id, t.fk_bank_account_id AS bank_account_id, t.date_transaction, t.transaction_value, t.description, t.is_recurring, e.installments_total, e.installments_paid, e.payment_responsible, e.payment_type, e.fk_categories_id " +
                 "FROM transactions t " +
-                "INNER JOIN " +
-                "expenses e " +
-                "ON " +
-                "t.id = e.fk_transactions_id " +
+                "INNER JOIN expenses e ON t.id = e.fk_transactions_id " +
                 "WHERE t.id = ?";
-        PreparedStatement stmt = connection.prepareStatement(sql);
-        stmt.setInt(1, id);
-        ResultSet rs = stmt.executeQuery();
-
-        if (rs.next()) {
-            Category category = new CategoryDAO().getCategoryById(rs.getInt("fk_categories_id"));
-
-            return new Expense(rs.getInt("transaction_id"),
-                    rs.getInt("bank_account_id"),
-                    rs.getDate("date_transaction").toLocalDate(),
-                    rs.getDouble("transaction_value"),
-                    rs.getString("description"),
-                    rs.getBoolean("is_recurring"),
-                    rs.getInt("installments_total"),
-                    rs.getInt("installments_paid"),
-                    rs.getString("payment_responsible"),
-                    PaymentType.valueOf(rs.getString("payment_type")),
-                    category
-            );
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                Category category = new CategoryDAO().getCategoryById(rs.getInt("fk_categories_id"));
+                return new Expense(
+                        rs.getInt("transaction_id"),
+                        rs.getInt("bank_account_id"),
+                        rs.getDate("date_transaction").toLocalDate(),
+                        rs.getDouble("transaction_value"),
+                        rs.getString("description"),
+                        rs.getBoolean("is_recurring"),
+                        rs.getInt("installments_total"),
+                        rs.getInt("installments_paid"),
+                        rs.getString("payment_responsible"),
+                        PaymentType.valueOf(rs.getString("payment_type")),
+                        category
+                );
+            }
+            return null;
         }
-
-        return null;
     }
 
     public List<Expense> findByUserId(int userId) throws SQLException {
         String sql = "SELECT " +
-                "t.id AS transaction_id, ba.id AS bank_account_id, ba.name, t.date_transaction, t.transaction_value, t.description, t.is_recurring, e.installments_total, e.installments_paid, e.payment_responsible, e.payment_type, e.fk_categories_id " +
+                "t.id AS transaction_id, ba.id AS bank_account_id, ba.bank_name, t.date_transaction, t.transaction_value, t.description, t.is_recurring, e.installments_total, e.installments_paid, e.payment_responsible, e.payment_type, e.fk_categories_id " +
                 "FROM " +
                 "transactions t " +
                 "INNER JOIN " +
@@ -119,7 +113,7 @@ public class ExpenseDAO {
 
     public List<Expense> findByPeriod(int userId, LocalDate startDate, LocalDate endDate) throws SQLException {
         String sql = "SELECT " +
-                "t.id AS transaction_id, ba.id AS bank_account_id, ba.name, t.date_transaction, t.transaction_value, t.description, t.is_recurring, e.installments_total, e.installments_paid, e.payment_responsible, e.payment_type, e.fk_categories_id " +
+                "t.id AS transaction_id, ba.id AS bank_account_id, ba.bank_name, t.date_transaction, t.transaction_value, t.description, t.is_recurring, e.installments_total, e.installments_paid, e.payment_responsible, e.payment_type, e.fk_categories_id " +
                 "FROM " +
                 "transactions t " +
                 "INNER JOIN " +
