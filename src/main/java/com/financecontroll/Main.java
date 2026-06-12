@@ -13,7 +13,7 @@ public class Main extends Application {
         Scene scene = new Scene(loader.load());
         stage.setTitle("Finance Control");
         stage.setScene(scene);
-        stage.setResizable(false);
+        stage.setMaximized(true);
         stage.show();
     }
 

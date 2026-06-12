@@ -18,7 +18,7 @@ public class NavigationUtil {
             loader.load();
             DashboardController controller = loader.getController();
             controller.setUser(user);
-            getStage(node).setScene(new Scene(loader.getRoot()));
+            applyScene(node, new Scene(loader.getRoot()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -30,7 +30,7 @@ public class NavigationUtil {
             loader.load();
             ProfileController controller = loader.getController();
             controller.setUser(user);
-            getStage(node).setScene(new Scene(loader.getRoot()));
+            applyScene(node, new Scene(loader.getRoot()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -40,7 +40,7 @@ public class NavigationUtil {
         try {
             FXMLLoader loader = new FXMLLoader(NavigationUtil.class.getResource("/view/bankaccount.fxml"));
             loader.load();
-            getStage(node).setScene(new Scene(loader.getRoot()));
+            applyScene(node, new Scene(loader.getRoot()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -49,7 +49,7 @@ public class NavigationUtil {
     public static void navigateToLogin(Node node) {
         try {
             FXMLLoader loader = new FXMLLoader(NavigationUtil.class.getResource("/view/login.fxml"));
-            getStage(node).setScene(new Scene(loader.load()));
+            applyScene(node, new Scene(loader.load()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -57,5 +57,17 @@ public class NavigationUtil {
 
     private static Stage getStage(Node node) {
         return (Stage) node.getScene().getWindow();
+    }
+
+    private static void applyScene(Node node, Scene scene) {
+        Stage stage = getStage(node);
+        boolean wasMaximized = stage.isMaximized();
+        if (wasMaximized) {
+            stage.setMaximized(false);
+        }
+        stage.setScene(scene);
+        if (wasMaximized) {
+            stage.setMaximized(true);
+        }
     }
 }

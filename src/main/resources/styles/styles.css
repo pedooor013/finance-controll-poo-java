@@ -308,3 +308,9 @@
     -fx-background-color: #7C3AED;
     -fx-text-fill: #FFFFFF;
 }
+
+/* === SUCCESS === */
+.success-label {
+    -fx-text-fill: #10B981;
+    -fx-font-size: 12px;
+}
