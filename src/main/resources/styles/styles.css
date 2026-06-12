@@ -1,0 +1,96 @@
+/* === CORES === */
+/* Roxo principal: #7C3AED */
+/* Roxo escuro: #5B21B6 */
+/* Roxo claro: #EDE9FE */
+
+/* === PAINEIS === */
+.left-panel {
+    -fx-background-color: #7C3AED;
+    -fx-padding: 40;
+}
+
+.right-panel {
+    -fx-background-color: #FFFFFF;
+    -fx-padding: 40;
+}
+
+/* === TEXTOS PAINEL ESQUERDO === */
+.brand-title {
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+}
+
+.brand-subtitle {
+    -fx-text-fill: #EDE9FE;
+    -fx-font-size: 14px;
+    -fx-text-alignment: center;
+    -fx-alignment: center;
+}
+
+/* === TEXTOS FORMULARIO === */
+.form-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1F1F1F;
+}
+
+.form-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #6B7280;
+}
+
+.field-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #374151;
+}
+
+/* === INPUTS === */
+.input-field {
+    -fx-pref-width: 320;
+    -fx-pref-height: 42;
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: #D1D5DB;
+    -fx-border-width: 1.5;
+    -fx-padding: 0 12;
+    -fx-font-size: 13px;
+}
+
+.input-field:focused {
+    -fx-border-color: #7C3AED;
+}
+
+/* === BOTAO PRINCIPAL === */
+.primary-button {
+    -fx-pref-width: 320;
+    -fx-pref-height: 42;
+    -fx-background-color: #7C3AED;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.primary-button:hover {
+    -fx-background-color: #5B21B6;
+}
+
+/* === LINK === */
+.link {
+    -fx-text-fill: #7C3AED;
+    -fx-font-size: 13px;
+    -fx-border-color: transparent;
+}
+
+.link:hover {
+    -fx-text-fill: #5B21B6;
+}
+
+/* === ERRO === */
+.error-label {
+    -fx-text-fill: #DC2626;
+    -fx-font-size: 12px;
+}
