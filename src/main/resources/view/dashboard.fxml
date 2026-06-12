@@ -1,14 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="CONTROLLER_NAME"
-            prefHeight="400.0" prefWidth="600.0">
+<HBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.financecontroll.controller.DashboardController"
+      stylesheets="@../styles/styles.css"
+      prefWidth="1100" prefHeight="700">
 
-</AnchorPane>
+    <!-- Menu Lateral -->
+    <VBox styleClass="sidebar" prefWidth="220" prefHeight="700" spacing="8">
+        <Label text="Finance Control" styleClass="brand-title-small"/>
+
+        <VBox spacing="4" VBox.vgrow="ALWAYS">
+            <Button text="🏠  Dashboard" styleClass="sidebar-button-active" maxWidth="Infinity" onAction="#handleDashboard"/>
+            <Button text="👤  Perfil" styleClass="sidebar-button" maxWidth="Infinity" onAction="#handlePerfil"/>
+            <Button text="🏦  Contas Bancárias" styleClass="sidebar-button" maxWidth="Infinity" onAction="#handleContas"/>
+            <Tooltip>
+                <Button text="📊  Relatórios" styleClass="sidebar-button-disabled" maxWidth="Infinity"/>
+            </Tooltip>
+            <Button fx:id="relatoriosBtn" text="📊  Relatórios" styleClass="sidebar-button-disabled" maxWidth="Infinity"/>
+        </VBox>
+
+        <Button text="🚪  Logout" styleClass="sidebar-logout" maxWidth="Infinity" onAction="#handleLogout"/>
+    </VBox>
+
+    <!-- Conteúdo Principal -->
+    <VBox styleClass="main-content" prefWidth="880" prefHeight="700" spacing="24">
+        <padding>
+            <Insets top="32" right="32" bottom="32" left="32"/>
+        </padding>
+
+        <!-- Header -->
+        <HBox alignment="CENTER_LEFT" spacing="16">
+            <VBox spacing="4" HBox.hgrow="ALWAYS">
+                <Label fx:id="welcomeLabel" text="Olá, Usuário!" styleClass="form-title"/>
+                <Label fx:id="monthLabel" text="Junho 2026" styleClass="form-subtitle"/>
+            </VBox>
+            <Button text="+ Nova Operação" styleClass="primary-button" onAction="#handleNovaOperacao"/>
+        </HBox>
+
+        <!-- Cards de Saldo -->
+        <HBox spacing="16">
+            <VBox styleClass="card-income" prefWidth="260" spacing="8">
+                <Label text="Entradas" styleClass="card-label"/>
+                <Label fx:id="totalIncomeLabel" text="R$ 0,00" styleClass="card-value-income"/>
+            </VBox>
+            <VBox styleClass="card-expense" prefWidth="260" spacing="8">
+                <Label text="Saídas" styleClass="card-label"/>
+                <Label fx:id="totalExpenseLabel" text="R$ 0,00" styleClass="card-value-expense"/>
+            </VBox>
+            <VBox styleClass="card-balance" prefWidth="260" spacing="8">
+                <Label text="Saldo" styleClass="card-label"/>
+                <Label fx:id="balanceLabel" text="R$ 0,00" styleClass="card-value-balance"/>
+            </VBox>
+        </HBox>
+
+        <!-- Transações -->
+        <VBox spacing="8" VBox.vgrow="ALWAYS">
+            <Label text="Transações do mês" styleClass="section-title"/>
+            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="scroll-pane">
+                <VBox fx:id="transactionList" spacing="0"/>
+            </ScrollPane>
+        </VBox>
+
+    </VBox>
+
+</HBox>
