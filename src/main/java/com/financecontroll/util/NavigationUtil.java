@@ -1,5 +1,6 @@
 package com.financecontroll.util;
 
+import com.financecontroll.controller.BankAccountController;
 import com.financecontroll.controller.DashboardController;
 import com.financecontroll.controller.ProfileController;
 import com.financecontroll.model.User;
@@ -40,6 +41,8 @@ public class NavigationUtil {
         try {
             FXMLLoader loader = new FXMLLoader(NavigationUtil.class.getResource("/view/bankaccount.fxml"));
             loader.load();
+            BankAccountController controller = loader.getController();
+            controller.setUser(user);
             applyScene(node, new Scene(loader.getRoot()));
         } catch (IOException e) {
             throw new RuntimeException(e);

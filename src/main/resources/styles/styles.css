@@ -314,3 +314,50 @@
     -fx-text-fill: #10B981;
     -fx-font-size: 12px;
 }
+
+/* === BOTAO SECUNDARIO === */
+.secondary-button {
+    -fx-pref-height: 42;
+    -fx-background-color: #F3F4F6;
+    -fx-text-fill: #374151;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+}
+
+.secondary-button:hover {
+    -fx-background-color: #E5E7EB;
+}
+
+/* === BOTAO DELETE === */
+.delete-button {
+    -fx-background-color: #FEE2E2;
+    -fx-text-fill: #EF4444;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 6 12;
+}
+
+.delete-button:hover {
+    -fx-background-color: #EF4444;
+    -fx-text-fill: #FFFFFF;
+}
+
+/* === BOTAO EDITAR === */
+.edit-button {
+    -fx-background-color: #EDE9FE;
+    -fx-text-fill: #7C3AED;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-padding: 6 12;
+}
+
+.edit-button:hover {
+    -fx-background-color: #7C3AED;
+    -fx-text-fill: #FFFFFF;
+}
