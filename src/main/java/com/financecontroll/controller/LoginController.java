@@ -1,5 +1,6 @@
 package com.financecontroll.controller;
 
+import com.financecontroll.model.User;
 import com.financecontroll.model.dao.UserDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -32,9 +33,12 @@ public class LoginController {
 
         if (userDAO.checkUser(email, password)) {
             try {
+                User user = userDAO.findByEmail(email);
                 Stage stage = (Stage) emailField.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/dashboard.fxml"));
                 stage.setScene(new Scene(loader.load()));
+                DashboardController controller = loader.getController();
+                controller.setUser(user);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
