@@ -5,6 +5,7 @@ import com.financecontroll.model.dao.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.control.ToggleGroup;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -37,10 +38,28 @@ public class OperationController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        ToggleGroup group = new ToggleGroup();
+        expenseBtn.setToggleGroup(group);
+        incomeBtn.setToggleGroup(group);
+
         datePicker.setValue(LocalDate.now());
         expenseBtn.setSelected(true);
         expenseFields.setVisible(true);
         expenseFields.setManaged(true);
+
+        group.selectedToggleProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal == expenseBtn) {
+                isExpense = true;
+                expenseFields.setVisible(true);
+                expenseFields.setManaged(true);
+            } else if (newVal == incomeBtn) {
+                isExpense = false;
+                expenseFields.setVisible(false);
+                expenseFields.setManaged(false);
+            } else {
+                oldVal.setSelected(true);
+            }
+        });
 
         try {
             List<Category> categories = categoryDAO.getAllCategories();
