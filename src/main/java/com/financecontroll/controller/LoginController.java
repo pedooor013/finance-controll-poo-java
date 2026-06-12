@@ -34,11 +34,12 @@ public class LoginController {
         if (userDAO.checkUser(email, password)) {
             try {
                 User user = userDAO.findByEmail(email);
-                Stage stage = (Stage) emailField.getScene().getWindow();
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/dashboard.fxml"));
-                stage.setScene(new Scene(loader.load()));
+                loader.load();
                 DashboardController controller = loader.getController();
                 controller.setUser(user);
+                Stage stage = (Stage) emailField.getScene().getWindow();
+                stage.setScene(new Scene(loader.getRoot()));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

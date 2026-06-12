@@ -19,9 +19,6 @@
             <Button text="🏠  Dashboard" styleClass="sidebar-button-active" maxWidth="Infinity" onAction="#handleDashboard"/>
             <Button text="👤  Perfil" styleClass="sidebar-button" maxWidth="Infinity" onAction="#handlePerfil"/>
             <Button text="🏦  Contas Bancárias" styleClass="sidebar-button" maxWidth="Infinity" onAction="#handleContas"/>
-            <Tooltip>
-                <Button text="📊  Relatórios" styleClass="sidebar-button-disabled" maxWidth="Infinity"/>
-            </Tooltip>
             <Button fx:id="relatoriosBtn" text="📊  Relatórios" styleClass="sidebar-button-disabled" maxWidth="Infinity"/>
         </VBox>
 
