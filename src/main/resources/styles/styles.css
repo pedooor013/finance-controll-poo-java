@@ -279,3 +279,32 @@
     -fx-text-fill: #EF4444;
     -fx-font-size: 16px;
 }
+
+/* === OPERATION === */
+.toggle-expense {
+    -fx-background-color: #FEE2E2;
+    -fx-text-fill: #EF4444;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 10 16;
+    -fx-cursor: hand;
+}
+
+.toggle-expense:selected {
+    -fx-background-color: #EF4444;
+    -fx-text-fill: #FFFFFF;
+}
+
+.toggle-income {
+    -fx-background-color: #EDE9FE;
+    -fx-text-fill: #7C3AED;
+    -fx-font-weight: bold;
+    -fx-background-radius: 8;
+    -fx-padding: 10 16;
+    -fx-cursor: hand;
+}
+
+.toggle-income:selected {
+    -fx-background-color: #7C3AED;
+    -fx-text-fill: #FFFFFF;
+}

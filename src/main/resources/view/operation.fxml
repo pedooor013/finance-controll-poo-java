@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.financecontroll.controller.OperationController"
+      stylesheets="@../styles/styles.css"
+      prefWidth="440" prefHeight="520"
+      spacing="16" styleClass="right-panel">
+
+    <padding>
+        <Insets top="32" right="32" bottom="32" left="32"/>
+    </padding>
+
+    <Label text="Nova Operação" styleClass="form-title"/>
+    <Label text="Selecione o tipo e preencha os dados." styleClass="form-subtitle"/>
+
+    <!-- Tipo de operação -->
+    <HBox spacing="12">
+        <ToggleButton fx:id="expenseBtn" text="↓  Despesa" styleClass="toggle-expense" onAction="#handleToggle" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+        <ToggleButton fx:id="incomeBtn" text="↑  Receita" styleClass="toggle-income" onAction="#handleToggle" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+    </HBox>
+
+    <!-- Campos -->
+    <VBox spacing="6">
+        <Label text="Descrição" styleClass="field-label"/>
+        <TextField fx:id="descriptionField" promptText="Ex: Mercado, Salário..." styleClass="input-field"/>
+    </VBox>
+
+    <VBox spacing="6">
+        <Label text="Valor" styleClass="field-label"/>
+        <TextField fx:id="valueField" promptText="0,00" styleClass="input-field"/>
+    </VBox>
+
+    <VBox spacing="6">
+        <Label text="Data" styleClass="field-label"/>
+        <DatePicker fx:id="datePicker" styleClass="input-field" maxWidth="Infinity"/>
+    </VBox>
+
+    <!-- Campos específicos de Despesa -->
+    <VBox fx:id="expenseFields" spacing="12">
+        <VBox spacing="6">
+            <Label text="Categoria" styleClass="field-label"/>
+            <ComboBox fx:id="categoryCombo" promptText="Selecione..." styleClass="input-field" maxWidth="Infinity"/>
+        </VBox>
+
+        <HBox spacing="12">
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Label text="Parcelas" styleClass="field-label"/>
+                <TextField fx:id="installmentsField" promptText="1" styleClass="input-field"/>
+            </VBox>
+            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                <Label text="Tipo de Pagamento" styleClass="field-label"/>
+                <ComboBox fx:id="paymentTypeCombo" promptText="Selecione..." styleClass="input-field" maxWidth="Infinity"/>
+            </VBox>
+        </HBox>
+
+        <VBox spacing="6">
+            <Label text="Responsável" styleClass="field-label"/>
+            <TextField fx:id="responsibleField" promptText="Nome do responsável" styleClass="input-field"/>
+        </VBox>
+    </VBox>
+
+    <Label fx:id="errorLabel" styleClass="error-label" text="" wrapText="true"/>
+
+    <Button text="Salvar" styleClass="primary-button" onAction="#handleSave" maxWidth="Infinity"/>
+
+</VBox>
