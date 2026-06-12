@@ -178,7 +178,32 @@ public class ExpenseDAO {
         }
     }
 
-    public boolean update(Expense expense) throws SQLException {
+    public void update(Expense expense) throws SQLException {
+        try {
+            connection.setAutoCommit(false);
 
+            String sql = "UPDATE expenses SET installments_total = ?, installments_paid = ?, payment_responsible = ?, payment_type = ?, fk_categories_id = ? WHERE fk_transactions_id = ?";
+            try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+                stmt.setInt(1, expense.getInstallmentsTotal());
+                stmt.setInt(2, expense.getInstallmentsPaid());
+                stmt.setString(3, expense.getPaymentResponsible());
+                stmt.setString(4, expense.getPaymentType().toString());
+                stmt.setInt(5, expense.getCategory().getId());
+                stmt.setInt(6, expense.getId());
+
+                stmt.executeUpdate();
+            }
+
+            TransactionDAO transactionDAO = new TransactionDAO();
+            transactionDAO.update(expense);
+
+            connection.commit();
+
+        } catch (Exception e) {
+            connection.rollback();
+            throw new RuntimeException(e);
+        } finally {
+            connection.setAutoCommit(true);
+        }
     }
 }

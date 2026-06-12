@@ -25,7 +25,6 @@ public class TransactionDAO {
             stmt.executeUpdate();
             ResultSet keys = stmt.getGeneratedKeys();
             if(keys.next()){
-                return keys.getInt(1);
             }
         }
         throw new RuntimeException("Failed to save transaction");
@@ -36,6 +35,24 @@ public class TransactionDAO {
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
+        }
+    }
+
+    public void update(Transaction transaction) throws SQLException {
+
+        String sql = "UPDATE transactions SET date_transaction = ?, transaction_value = ?, description = ?, is_recurring = ?, transaction_type = ? WHERE id = ?";
+
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setDate(1, Date.valueOf(transaction.getDateTimeTransaction()));
+            stmt.setDouble(2, transaction.getTransactionValue());
+            stmt.setString(3, transaction.getDescription());
+            stmt.setBoolean(4, transaction.getIsRecurring());
+            stmt.setString(5, String.valueOf(transaction.getTransactionType()));
+            stmt.setInt(6, transaction.getId());
+
+            stmt.executeUpdate();
+        }catch(SQLException e){
+            throw new RuntimeException(e);
         }
     }
 
