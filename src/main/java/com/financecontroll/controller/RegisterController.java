@@ -2,28 +2,21 @@ package com.financecontroll.controller;
 
 import com.financecontroll.model.User;
 import com.financecontroll.model.dao.UserDAO;
+import com.financecontroll.util.NavigationUtil;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.sql.SQLException;
 
 public class RegisterController {
 
-    @FXML
-    private TextField usernameField;
-    @FXML
-    private TextField emailField;
-    @FXML
-    private PasswordField passwordField;
-    @FXML
-    private PasswordField confirmPasswordField;
-    @FXML
-    private Label errorLabel;
+    @FXML private TextField usernameField;
+    @FXML private TextField emailField;
+    @FXML private PasswordField passwordField;
+    @FXML private PasswordField confirmPasswordField;
+    @FXML private Label errorLabel;
 
     private final UserDAO userDAO = new UserDAO();
 
@@ -49,16 +42,11 @@ public class RegisterController {
             handleGoToLogin();
         } else {
             errorLabel.setText("As senhas devem ser iguais!");
-            return;
         }
-
     }
 
     @FXML
-    private void handleGoToLogin() throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/login.fxml"));
-        Stage stage = (Stage) errorLabel.getScene().getWindow();
-        stage.setScene(new Scene(loader.load()));
+    private void handleGoToLogin() {
+        NavigationUtil.navigateToLogin(errorLabel);
     }
-
 }

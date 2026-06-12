@@ -7,6 +7,7 @@ import com.financecontroll.model.User;
 import com.financecontroll.model.dao.ExpenseDAO;
 import com.financecontroll.model.dao.IncomeDAO;
 import javafx.fxml.FXML;
+import com.financecontroll.util.NavigationUtil;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -159,15 +160,17 @@ public class DashboardController {
     private void handleDashboard() {}
 
     @FXML
-    private void handlePerfil() {}
+    private void handlePerfil() {
+        NavigationUtil.navigateToProfile(welcomeLabel, currentUser);
+    }
 
     @FXML
-    private void handleContas() {}
+    private void handleContas() {
+        NavigationUtil.navigateToBankAccount(welcomeLabel, currentUser);
+    }
 
     @FXML
-    private void handleLogout() throws IOException {
-        Stage stage = (Stage) welcomeLabel.getScene().getWindow();
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/login.fxml"));
-        stage.setScene(new Scene(loader.load()));
+    private void handleLogout() {
+        NavigationUtil.navigateToLogin(welcomeLabel);
     }
 }
