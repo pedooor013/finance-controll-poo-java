@@ -27,6 +27,7 @@ public abstract class Transaction {
         this.isRecurring = isRecurring;
         this.transactionType = transactionType;
     }
+
     public Transaction(int id, int bankAccountId, double transactionValue, String description, boolean isRecurring, TransactionType transactionType) {
         this.id = id;
         this.bankAccountId = bankAccountId;
@@ -36,6 +37,7 @@ public abstract class Transaction {
         this.isRecurring = isRecurring;
         this.transactionType = transactionType;
     }
+
     public Transaction(int id, int bankAccountId, LocalDate dateTimeTransaction, double transactionValue, String description, boolean isRecurring, TransactionType transactionType) {
         this.id = id;
         this.bankAccountId = bankAccountId;
@@ -48,6 +50,10 @@ public abstract class Transaction {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public int getBankAccountId() {

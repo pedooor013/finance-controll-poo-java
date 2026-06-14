@@ -17,23 +17,38 @@ import java.util.ResourceBundle;
 
 public class OperationController implements Initializable {
 
-    @FXML private ToggleButton expenseBtn;
-    @FXML private ToggleButton incomeBtn;
-    @FXML private ComboBox<BankAccount> bankAccountCombo;
-    @FXML private TextField descriptionField;
-    @FXML private TextField valueField;
-    @FXML private DatePicker datePicker;
-    @FXML private VBox expenseFields;
-    @FXML private ComboBox<Category> categoryCombo;
-    @FXML private ComboBox<PaymentType> paymentTypeCombo;
-    @FXML private VBox installmentsPanel;
-    @FXML private TextField installmentsField;
-    @FXML private TextField responsibleField;
-    @FXML private CheckBox recurringCheck;
-    @FXML private Label errorLabel;
+    @FXML
+    private ToggleButton expenseBtn;
+    @FXML
+    private ToggleButton incomeBtn;
+    @FXML
+    private ComboBox<BankAccount> bankAccountCombo;
+    @FXML
+    private TextField descriptionField;
+    @FXML
+    private TextField valueField;
+    @FXML
+    private DatePicker datePicker;
+    @FXML
+    private VBox expenseFields;
+    @FXML
+    private ComboBox<Category> categoryCombo;
+    @FXML
+    private ComboBox<PaymentType> paymentTypeCombo;
+    @FXML
+    private VBox installmentsPanel;
+    @FXML
+    private TextField installmentsField;
+    @FXML
+    private TextField responsibleField;
+    @FXML
+    private CheckBox recurringCheck;
+    @FXML
+    private Label errorLabel;
 
     private User currentUser;
     private boolean isExpense = true;
+    private Transaction currentTransaction = null;
 
     private final ExpenseDAO expenseDAO = new ExpenseDAO();
     private final IncomeDAO incomeDAO = new IncomeDAO();
@@ -57,10 +72,12 @@ public class OperationController implements Initializable {
                 isExpense = true;
                 expenseFields.setVisible(true);
                 expenseFields.setManaged(true);
+                recurringCheck.setText("Despesa recorrente (repete todo mês)");
             } else if (newVal == incomeBtn) {
                 isExpense = false;
                 expenseFields.setVisible(false);
                 expenseFields.setManaged(false);
+                recurringCheck.setText("Receita recorrente (repete todo mês)");
             } else {
                 oldVal.setSelected(true);
             }
@@ -68,8 +85,15 @@ public class OperationController implements Initializable {
 
         paymentTypeCombo.getItems().addAll(PaymentType.values());
         paymentTypeCombo.setConverter(new StringConverter<>() {
-            @Override public String toString(PaymentType p) { return p != null ? p.toString() : ""; }
-            @Override public PaymentType fromString(String s) { return null; }
+            @Override
+            public String toString(PaymentType p) {
+                return p != null ? p.toString() : "";
+            }
+
+            @Override
+            public PaymentType fromString(String s) {
+                return null;
+            }
         });
 
         paymentTypeCombo.valueProperty().addListener((obs, oldVal, newVal) -> {
@@ -82,8 +106,15 @@ public class OperationController implements Initializable {
             List<Category> categories = categoryDAO.getAllCategories();
             categoryCombo.getItems().addAll(categories);
             categoryCombo.setConverter(new StringConverter<>() {
-                @Override public String toString(Category c) { return c != null ? c.getName() : ""; }
-                @Override public Category fromString(String s) { return null; }
+                @Override
+                public String toString(Category c) {
+                    return c != null ? c.getName() : "";
+                }
+
+                @Override
+                public Category fromString(String s) {
+                    return null;
+                }
             });
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -96,8 +127,15 @@ public class OperationController implements Initializable {
             List<BankAccount> accounts = bankAccountDAO.findBankAccountsByUserId(user.getId());
             bankAccountCombo.getItems().addAll(accounts);
             bankAccountCombo.setConverter(new StringConverter<>() {
-                @Override public String toString(BankAccount b) { return b != null ? b.getBankName() : ""; }
-                @Override public BankAccount fromString(String s) { return null; }
+                @Override
+                public String toString(BankAccount b) {
+                    return b != null ? b.getBankName() : "";
+                }
+
+                @Override
+                public BankAccount fromString(String s) {
+                    return null;
+                }
             });
             if (!accounts.isEmpty()) bankAccountCombo.setValue(accounts.get(0));
         } catch (SQLException e) {
@@ -106,6 +144,7 @@ public class OperationController implements Initializable {
     }
 
     public void setTransaction(Transaction t) {
+        this.currentTransaction = t;
         descriptionField.setText(t.getDescription());
         valueField.setText(String.valueOf(t.getTransactionValue()));
         datePicker.setValue(t.getDateTimeTransaction());
@@ -121,12 +160,14 @@ public class OperationController implements Initializable {
             paymentTypeCombo.setValue(expense.getPaymentType());
             installmentsField.setText(String.valueOf(expense.getInstallmentsTotal()));
             responsibleField.setText(expense.getPaymentResponsible());
+            recurringCheck.setText("Despesa recorrente (repete todo mês)");
         } else {
             incomeBtn.setSelected(true);
             expenseBtn.setSelected(false);
             isExpense = false;
             expenseFields.setVisible(false);
             expenseFields.setManaged(false);
+            recurringCheck.setText("Receita recorrente (repete todo mês)");
         }
     }
 
@@ -152,7 +193,7 @@ public class OperationController implements Initializable {
 
         try {
             if (isExpense) {
-                if (categoryCombo.getValue() == null || paymentTypeCombo.getValue() == null || responsibleField.getText().isEmpty()) {
+                if (categoryCombo.getValue() == null || paymentTypeCombo.getValue() == null) {
                     errorLabel.setText("Preencha todos os campos da despesa!");
                     return;
                 }
@@ -168,11 +209,23 @@ public class OperationController implements Initializable {
                 Expense expense = new Expense(bankAccount.getId(), value, description, recurringCheck.isSelected(), installments, 0,
                         responsibleField.getText(), paymentTypeCombo.getValue(), categoryCombo.getValue());
                 expense.setDateTimeTransaction(date);
-                expenseDAO.save(expense, transactionDAO);
+
+                if (currentTransaction != null) {
+                    expense.setId(currentTransaction.getId());
+                    expenseDAO.update(expense);
+                } else {
+                    expenseDAO.save(expense, transactionDAO);
+                }
             } else {
-                Income income = new Income(bankAccount.getId(), value, description, false);
+                Income income = new Income(bankAccount.getId(), value, description, recurringCheck.isSelected());
                 income.setDateTimeTransaction(date);
-                incomeDAO.save(income, transactionDAO);
+
+                if (currentTransaction != null) {
+                    income.setId(currentTransaction.getId());
+                    incomeDAO.update(income);
+                } else {
+                    incomeDAO.save(income, transactionDAO);
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
