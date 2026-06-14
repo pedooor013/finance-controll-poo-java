@@ -48,6 +48,7 @@ public class OperationController implements Initializable {
 
     private User currentUser;
     private boolean isExpense = true;
+    private Transaction currentTransaction = null;
 
     private final ExpenseDAO expenseDAO = new ExpenseDAO();
     private final IncomeDAO incomeDAO = new IncomeDAO();
@@ -143,6 +144,7 @@ public class OperationController implements Initializable {
     }
 
     public void setTransaction(Transaction t) {
+        this.currentTransaction = t;
         descriptionField.setText(t.getDescription());
         valueField.setText(String.valueOf(t.getTransactionValue()));
         datePicker.setValue(t.getDateTimeTransaction());
@@ -207,11 +209,23 @@ public class OperationController implements Initializable {
                 Expense expense = new Expense(bankAccount.getId(), value, description, recurringCheck.isSelected(), installments, 0,
                         responsibleField.getText(), paymentTypeCombo.getValue(), categoryCombo.getValue());
                 expense.setDateTimeTransaction(date);
-                expenseDAO.save(expense, transactionDAO);
+
+                if (currentTransaction != null) {
+                    expense.setId(currentTransaction.getId());
+                    expenseDAO.update(expense);
+                } else {
+                    expenseDAO.save(expense, transactionDAO);
+                }
             } else {
                 Income income = new Income(bankAccount.getId(), value, description, recurringCheck.isSelected());
                 income.setDateTimeTransaction(date);
-                incomeDAO.save(income, transactionDAO);
+
+                if (currentTransaction != null) {
+                    income.setId(currentTransaction.getId());
+                    incomeDAO.update(income);
+                } else {
+                    incomeDAO.save(income, transactionDAO);
+                }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
